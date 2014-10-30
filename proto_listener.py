@@ -1,3 +1,5 @@
+# Requires Python 3.4 and a `pip install autobahn`
+
 import asyncio
 from autobahn.asyncio.websocket import WebSocketClientProtocol, WebSocketClientFactory
 import json
