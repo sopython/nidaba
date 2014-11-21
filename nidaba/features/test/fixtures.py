@@ -21,3 +21,13 @@ def answer_fixture(scope='module'):
         a = json.loads(f.read())
 
     return a
+
+@pytest.fixture
+def user_fixture(scope='module'):
+    """Answer fixture giving access to question data in dict form."""
+    user_filename = './data/test_user.json'
+
+    with open(user_filename, 'r') as f:
+        a = json.loads(f)
+
+    return u
