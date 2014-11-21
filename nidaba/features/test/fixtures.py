@@ -8,7 +8,7 @@ def question_fixture(scope='module'):
     question_filename = './data/test_question.json'
 
     with open(question_filename, 'r') as f:
-        q = json.loads(f)
+        q = json.loads(f.read())
 
     return q
 
@@ -18,6 +18,6 @@ def answer_fixture(scope='module'):
     answer_filename = './data/test_answer.json'
 
     with open(answer_filename, 'r') as f:
-        a = json.loads(f)
+        a = json.loads(f.read())
 
     return a
