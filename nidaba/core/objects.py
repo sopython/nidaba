@@ -1,3 +1,17 @@
+class Comment(object):
+    """
+    Stack Overflow Comment object which will hold information for use in Nidaba analysis.
+    """
+
+    def __init__(self, data):
+        """
+        :param data: Dict containing comment information.
+        :return: None
+        """
+
+        self.__data = data
+
+
 class Answer(object):
     """
     Stack Overflow Answer object which will hold information for use in Nidaba analysis.
@@ -5,7 +19,7 @@ class Answer(object):
 
     def __init__(self, data):
         """
-        :param data: dict containing Answer information.
+        :param data: dict containing answer information.
         :return: None
         """
 
@@ -17,10 +31,11 @@ class Question(object):
     Stack Overflow Question object which will hold information for use in Nidaba analysis
     """
 
-    def __init__(self, data, answers=None):
+    def __init__(self, data, answers=None, comments=None):
         """
-        :param data: dict containing Question information.
-        :param answers: list of dicts containing answer information.
+        :param data: Dict containing question information.
+        :param answers: List of dicts containing answer information.
+        :param comments: List of dicts containing comment information
         :return: None
         """
 
@@ -30,3 +45,9 @@ class Question(object):
             self.answers = []
         else:
             self.answers = [Answer(ans) for ans in answers]
+
+        if comments is None:
+            self.comments = []
+        else:
+            self.comments = [Comment(comm) for comm in comments]
+
