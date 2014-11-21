@@ -1,3 +1,5 @@
+from string import ascii_letters
+
 ### General
 
 ### Title
@@ -5,11 +7,13 @@
 def capitalised_title(s):
     return s[0].isupper()
 
-def title_capitalisation_ratio(s):
+def title_capitalisation_percentage(s):
     upper = sum(i.isupper() for i in s)
     lower = sum(i.islower() for i in s)
 
-    return upper/lower
+    total = upper + lower
+
+    return upper/total
 
 ### Body
 
