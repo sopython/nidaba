@@ -9,7 +9,7 @@ class Comment(object):
         :return: None
         """
 
-        self.__data = data
+        self._data = data
 
 
 class Answer(object):
@@ -23,7 +23,7 @@ class Answer(object):
         :return: None
         """
 
-        self.__data = data
+        self._data = data
 
 
 class Question(object):
@@ -39,7 +39,7 @@ class Question(object):
         :return: None
         """
 
-        self.__data = data
+        self._data = data
 
         if answers is None:
             self.answers = []
@@ -50,4 +50,3 @@ class Question(object):
             self.comments = []
         else:
             self.comments = [Comment(comm) for comm in comments]
-
