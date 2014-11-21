@@ -15,6 +15,6 @@ class Question(object):
         self.__data = data
 
         if answers is None:
-            self.answers = [Answer(ans) for ans in answers]
+            self.answers = []
         else:
-            self.answers = answers
+            self.answers = [Answer(ans) for ans in answers]
