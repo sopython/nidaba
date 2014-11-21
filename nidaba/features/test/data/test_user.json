@@ -1,0 +1,27 @@
+{
+      "badge_counts": {
+        "bronze": 6132,
+        "silver": 4797,
+        "gold": 307
+      },
+      "account_id": 11683,
+      "is_employee": false,
+      "last_modified_date": 1416512470,
+      "last_access_date": 1416575262,
+      "reputation_change_year": 93597,
+      "reputation_change_quarter": 14805,
+      "reputation_change_month": 5585,
+      "reputation_change_week": 1550,
+      "reputation_change_day": 215,
+      "reputation": 728394,
+      "creation_date": 1222430705,
+      "user_type": "registered",
+      "user_id": 22656,
+      "age": 38,
+      "accept_rate": 85,
+      "location": "Reading, United Kingdom",
+      "website_url": "http://csharpindepth.com",
+      "link": "http://stackoverflow.com/users/22656/jon-skeet",
+      "display_name": "Jon Skeet",
+      "profile_image": "https://www.gravatar.com/avatar/6d8ebb117e8d83d74ea95fbdd0f87e13?s=128&d=identicon&r=PG"
+}
