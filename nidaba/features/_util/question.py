@@ -1,6 +1,15 @@
 from string import ascii_letters
 
+import datetime
+
+
 ### General
+
+def is_weekend(t):
+    week_day = datetime.datetime.fromtimestamp(t).weekday()
+    if week_day == 5 or week_day == 6:
+        return True
+    return False
 
 ### Title
 

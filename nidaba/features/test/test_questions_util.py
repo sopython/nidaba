@@ -2,6 +2,10 @@ from .._util import question
 
 ### General
 
+def test_is_weekend():
+    assert question.is_weekend(1416654427) == True
+    assert question.is_weekend(1417000158) == False
+
 ### Title
 
 def test_title_capitalisation():
