@@ -50,3 +50,17 @@ class Question(object):
             self.comments = []
         else:
             self.comments = [Comment(comm) for comm in comments]
+
+
+class User(object):
+    """
+    Stack Overflow User object which will hold information for use in Nidaba analysis.
+    """
+
+    def __init__(self, data):
+        """
+        :param data: dict containing user information.
+        :return: None
+        """
+
+        self._data = data

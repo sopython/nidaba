@@ -1,6 +1,15 @@
 from string import ascii_letters
 
+import datetime
+
+
 ### General
+
+def get_weekday(t):
+    return datetime.datetime.fromtimestamp(t).weekday()
+
+def is_weekend(t):
+    return get_weekday(t) in (5, 6)
 
 ### Title
 
