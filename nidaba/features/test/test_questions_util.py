@@ -2,6 +2,10 @@ from .._util import question
 
 ### General
 
+def test_get_weekday():
+    assert question.get_weekday(1416654427) == 5
+    assert question.get_weekday(1417000158) != 5
+
 def test_is_weekend():
     assert question.is_weekend(1416654427) == True
     assert question.is_weekend(1417000158) == False

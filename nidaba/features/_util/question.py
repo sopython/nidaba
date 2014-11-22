@@ -5,9 +5,11 @@ import datetime
 
 ### General
 
+def get_weekday(t):
+    return datetime.datetime.fromtimestamp(t).weekday()
+
 def is_weekend(t):
-    week_day = datetime.datetime.fromtimestamp(t).weekday()
-    return week_day in (5, 6)
+    return get_weekday(t) in (5, 6)
 
 ### Title
 
