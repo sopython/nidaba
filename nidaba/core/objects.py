@@ -1,30 +1,14 @@
 from pyparsing import makeHTMLTags, SkipTo
-from html.parser import HTMLParser
+
+from .parser import strip_tags
 
 
-class MLStripper(HTMLParser):
-    """
-    Simple parser to strip HTML tags.
-    :param: None
-    :return: None
-    """
-
+class Base(object):
     def __init__(self):
-        self.reset()
-        self.strict = False
-        self.convert_charrefs= True
-        self.fed = []
-
-    def handle_data(self, d):
-        self.fed.append(d)
-
-def strip_tags(html):
-    s = MLStripper()
-    s.feed(html)
-    return s.fed
+        super(Base, self).__init__()
 
 
-class Comment(object):
+class Comment(Base):
     """
     Stack Overflow Comment object which will hold information for use in Nidaba analysis.
     """
@@ -35,10 +19,12 @@ class Comment(object):
         :return: None
         """
 
+        super(Comment, self).__init__()
+
         self._data = data
 
 
-class Answer(object):
+class Answer(Base):
     """
     Stack Overflow Answer object which will hold information for use in Nidaba analysis.
     """
@@ -48,6 +34,8 @@ class Answer(object):
         :param data: dict containing answer information.
         :return: None
         """
+
+        super(Answer, self).__init__()
 
         self._data = data
 
@@ -64,6 +52,8 @@ class Question(object):
         :param comments: List of dicts containing comment information
         :return: None
         """
+
+        super(Question, self).__init__()
 
         self._data = data
         self.body = self._data.get('Body', '')
