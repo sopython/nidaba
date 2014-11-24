@@ -87,7 +87,7 @@ class Question(object):
     def _get_code(cls, html):
         code_start, code_end = makeHTMLTags('code')
         code = code_start + SkipTo(code_end).setResultsName('body') + code_end
-        return ''.join(token.body for token, start, end in code.scanString(html))
+        return ''.join([token.body for token, start, end in code.scanString(html)])
 
 
 class User(object):
