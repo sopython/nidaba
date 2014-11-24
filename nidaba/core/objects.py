@@ -69,7 +69,7 @@ class Question(object):
         """
 
         self._data = data
-        self.body = data.get('Body', '')
+        self.body = self._data.get('Body', '')
         self.text = strip_tags(self.body)
         self.code = self._get_code(self.body)
 
