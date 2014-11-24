@@ -1,16 +1,32 @@
-from pyparsing import makeHTMLTags, SkipTo
-
-from .parser import strip_tags
-
-
-class Base(object):
-    def __init__(self):
-        super(Base, self).__init__()
+from bs4 import BeautifulSoup
+from bs4.element import NavigableString
 
 
-class Comment(Base):
+class SEObject(object):
     """
-    Stack Overflow Comment object which will hold information for use in Nidaba analysis.
+    Base Object for SE Objects
+    """
+    def __init__(self, data):
+        self._data = data
+
+
+class User(SEObject):
+    """
+    Stack Overflow User object which will hold information for use in
+    Nidaba analysis.
+    """
+
+    def __init__(self, data):
+        """
+        :param data: dict containing user information.
+        :return: None
+        """
+        super().__init__(data)
+
+
+class Post(SEObject):
+    """
+    Base object for Question, Answer, Comments
     """
 
     def __init__(self, data):
@@ -18,15 +34,41 @@ class Comment(Base):
         :param data: Dict containing comment information.
         :return: None
         """
+        super().__init__(data)
+        self.body = self._data.get('Body', '')
+        self.text = self._get_text(self.body)
+        self.code = self._get_code(self.body)
 
-        super(Comment, self).__init__()
+    @classmethod
+    def _get_code(cls, html):
+        return [i.get_text() for i in BeautifulSoup(html).find_all('code')]
 
-        self._data = data
+    @classmethod
+    def _get_text(cls, html):
+        soup = BeautifulSoup(html)
+        [s.extract() for s in soup('code')]
+        return [i for i in soup.recursiveChildGenerator()
+                if isinstance(i, NavigableString)]
 
 
-class Answer(Base):
+class Comment(Post):
     """
-    Stack Overflow Answer object which will hold information for use in Nidaba analysis.
+    Stack Overflow Comment object which will hold information for use in
+    Nidaba analysis.
+    """
+
+    def __init__(self, data):
+        """
+        :param data: Dict containing comment information.
+        :return: None
+        """
+        super().__init__(data)
+
+
+class Answer(Post):
+    """
+    Stack Overflow Answer object which will hold information for use in
+    Nidaba analysis.
     """
 
     def __init__(self, data):
@@ -34,15 +76,13 @@ class Answer(Base):
         :param data: dict containing answer information.
         :return: None
         """
-
-        super(Answer, self).__init__()
-
-        self._data = data
+        super().__init__(data)
 
 
-class Question(object):
+class Question(Post):
     """
-    Stack Overflow Question object which will hold information for use in Nidaba analysis
+    Stack Overflow Question object which will hold information for use in
+    Nidaba analysis.
     """
 
     def __init__(self, data, answers=None, comments=None):
@@ -52,13 +92,7 @@ class Question(object):
         :param comments: List of dicts containing comment information
         :return: None
         """
-
-        super(Question, self).__init__()
-
-        self._data = data
-        self.body = self._data.get('Body', '')
-        self.text = strip_tags(self.body)
-        self.code = self._get_code(self.body)
+        super().__init__(data)
 
         if answers is None:
             self.answers = []
@@ -69,23 +103,3 @@ class Question(object):
             self.comments = []
         else:
             self.comments = [Comment(comm) for comm in comments]
-
-    @classmethod
-    def _get_code(cls, html):
-        code_start, code_end = makeHTMLTags('code')
-        code = code_start + SkipTo(code_end).setResultsName('body') + code_end
-        return [token.body for token, start, end in code.scanString(html)]
-
-
-class User(object):
-    """
-    Stack Overflow User object which will hold information for use in Nidaba analysis.
-    """
-
-    def __init__(self, data):
-        """
-        :param data: dict containing user information.
-        :return: None
-        """
-
-        self._data = data

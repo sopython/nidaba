@@ -1,1 +1,1 @@
-'''Core Nidaba objects.'''
+"""Core Nidaba objects."""

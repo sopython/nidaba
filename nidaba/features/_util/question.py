@@ -26,6 +26,12 @@ def title_capitalisation_percentage(s):
 
 ### Body
 
+def code_percentage(code, text):
+    code_size = sum(sum(len(j.strip()) for j in i) for i in code)
+    text_size = sum(sum(len(j.strip()) for j in i) for i in text)
+
+    return code_size/(code_size + text_size)
+
 ### Code
 
 ### Tags
