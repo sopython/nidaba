@@ -1,1 +1,1 @@
-from .core.objects import Question, Answer, Comment
+from .core.objects import Question, Answer, Comment, User
