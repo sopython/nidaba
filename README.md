@@ -24,5 +24,4 @@ Project Nidaba is a young project so far and we can constantly looking for ideas
 ### Links
 
 - [sopython chatroom](http://chat.stackoverflow.com/rooms/6/python)
-- [Project Nidaba Trello](https://trello.com/b/0eQHsdhY/project-nidaba)
 - [Project Nidaba Github](https://github.com/sopython/nidaba)
