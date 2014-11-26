@@ -1,27 +1,27 @@
 nidaba
 ======
 
-Nidaba is a data analytics project devoted to analysing and making use of the freely available information on Stack Overflow, in particular when relating to the Python programming language.
+Nidaba is a data analytics project which hopes to use machine learning to study Stack Overflow information.
 
-Stack Overflow is licensed under [CC BY-SA 3.0](http://creativecommons.org/licenses/by-sa/3.0/) meaning that we have access to a fantastic wealth of programming knowledge, with currently 300,000+ Python questions asked. Project Nidaba aims to use this data to help members of the Stack Overflow Python community.
+### Available Features
 
-A big part of Nidaba will be analysis of data. There will be broadly too different sets of analysis: analysis that is directly *actionable* (i.e. finding duplicates) and analysis that is instead *informative* (trends in the sopython data etc).
+*Will be added soon.*
 
-Some ideas we have going forward are:
+### Develop
 
-- Trends in the Python questions/answers with respect to time;
-- Highlighting famous questions and answers;
-- Finding interesting, hidden gems and shining a spotlight on them;
-- Suggesting possible duplicate questions automatically based on similar content;
-- Predicting the likelihood of closure of questions based on their quality;
-- Identifying spam questions so they can be quickly closed and deleted;
-- *FGITW* analysis by keeping track of edits inside grace timeframe;
-- Looking at "relationships" of people that interact via questions/answers/comments.
+To install Nidaba:
+~~~
+pip install --upgrade setuptools 
+git clone https://github.com/sopython/nidaba.git
+cd nidaba
+python setup.py install
+~~~
 
-Project Nidaba is a young project so far and we can constantly looking for ideas, advice, and help. Please contact us [by email](mailto:ffisegydd@sopython.com) or pop into the [sopython chatroom](http://chat.stackoverflow.com/rooms/6/python) if you want to chat.
+### Contribute
 
+Project Nidaba is a young project so far and we are constantly looking for ideas, advice, and help. Feel free to [contact us](http://github.com/sopython/nidaba#Contact) if you come up with any new ideas for nidaba. Or simply fork our repository, add your contributions and send us a pull request.
 
-### Links
+### Contact
 
-- [sopython chatroom](http://chat.stackoverflow.com/rooms/6/python)
-- [Project Nidaba Github](https://github.com/sopython/nidaba)
+- You can contact us [via email](mailto:ffisegydd@sopython.com)
+- Also feel free to pop into the [sopython chatroom](http://chat.stackoverflow.com/rooms/6/python) if you want to chat.
