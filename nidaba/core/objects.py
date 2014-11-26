@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from bs4.element import NavigableString
+from bs4.element import NavigableString, Tag
 
 
 class SEObject(object):
@@ -38,6 +38,7 @@ class Post(SEObject):
         self.body = self._data.get('Body', '')
         self.text = self._get_text(self.body)
         self.code = self._get_code(self.body)
+        self.markup = self._get_markup(self.body)
 
     @classmethod
     def _get_code(cls, html):
@@ -49,6 +50,12 @@ class Post(SEObject):
         [s.extract() for s in soup('code')]
         return [i for i in soup.recursiveChildGenerator()
                 if isinstance(i, NavigableString)]
+
+    @classmethod
+    def _get_markup(cls, html):
+        soup = BeautifulSoup(html).recursiveChildGenerator()
+        return [str(i).replace(i.string, '')
+                for i in soup if (isinstance(i, Tag) and i.string)]
 
 
 class Comment(Post):
