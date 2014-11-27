@@ -1,11 +1,19 @@
-from setuptools import setup, find_packages
+import re
+import os
 
+from setuptools import setup, find_packages
 
 try:
     with open('requirements.txt') as f:
         requirements = f.read().splitlines()
 except FileNotFoundError:
     requirements = []
+
+try:
+    with open(os.path.join(os.path.dirname(__file__), 'sopy', '__init__.py')) as f:
+        version = re.search(r"__version__ = '(.*)'", f.read()).group(1)
+except FileNotFoundError:
+    version = 'test'
 
 classifiers = [
     'Development Status :: 1 - Planning',
@@ -38,5 +46,6 @@ setup(
     author_email='ffisegydd@sopython.com',
     description='Machine learning library for studying Stack Overflow data.',
     install_requires=requirements,
-    classifiers=classifiers
+    classifiers=classifiers,
+    version=version
 )
