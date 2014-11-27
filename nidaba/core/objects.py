@@ -42,10 +42,20 @@ class Post(SEObject):
 
     @classmethod
     def _get_code(cls, html):
+        """
+        Extract code without markup tags from a given html content.
+        :param html: String
+        :return List of code strings in the given content
+        """
         return [i.get_text() for i in BeautifulSoup(html).find_all('code')]
 
     @classmethod
     def _get_text(cls, html):
+        """
+        Extract text from html content by removing markup tags & code.
+        :param html: String
+        :return List of strings in the given content
+        """
         soup = BeautifulSoup(html)
         [s.extract() for s in soup('code')]
         return [i for i in soup.recursiveChildGenerator()
@@ -53,9 +63,15 @@ class Post(SEObject):
 
     @classmethod
     def _get_markup(cls, html):
+        """
+        Filter markup tags from a given html content.
+        :param html: String
+        :return List of markup tags in the given content
+        """
         soup = BeautifulSoup(html).recursiveChildGenerator()
-        return [str(i).replace(i.string, '')
-                for i in soup if (isinstance(i, Tag) and i.string)]
+        tags = [tag for tag in soup if isinstance(tag, Tag)]
+        return [str(t) if t.isSelfClosing else str(t).replace(t.string, '')
+                for t in tags]
 
 
 class Comment(Post):
