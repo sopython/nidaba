@@ -1,8 +1,6 @@
 from .._util import question
 
 
-### General
-
 def test_get_weekday():
     """
     Test the get_weekday() _util function.
@@ -20,44 +18,68 @@ def test_is_weekend():
     assert question.is_weekend(1416654427) is True
     assert question.is_weekend(1417000158) is False
 
-### Title
 
-def test_title_capitalisation():
+def test_categorise_string_characters():
     """
-    Test the capitalised_title() function.
+    Test the categorise_string_characters() _util function
     :return: None
     """
-    assert question.capitalised_title('Why is reading lines from stdin much slower in C++ than Python?')
-    assert not question.capitalised_title('how make pysmp oids respone readable for human')
-    assert not question.capitalised_title('??? wat do???')
+    s = '''Cåbbage makes the \n world go round!!!!!1111ONE111!'''
+    c = question.categorise_string_characters(s)
 
-def test_title_capitalisation_percentage():
+    assert isinstance(c, dict)
+    assert c['Ll'] == 26  # Uppercase letters
+    assert c['Lu'] == 4  # Lowercase letters
+    assert c['Zs'] == 6  # Spaces
+    assert c['Cc'] == 1  # Control chars (tabs, newlines, etc)
+
+    assert not question.categorise_string_characters('')
+
+
+def test_character_fractions():
     """
-    Test the title_capitalisation_percentage() function.
+    Test the character_fractions() _util function.
     :return: None
     """
-    assert question.title_capitalisation_percentage('Why is reading lines from stdin much slower in C++ than Python?') == 3/(46 + 3)
-    assert question.title_capitalisation_percentage('how make pysmp oids respone readable for human') == (0/(39 + 0))
-    assert question.title_capitalisation_percentage('WAT DO PYTHON') == 11/(0 + 11)
-    assert question.title_capitalisation_percentage('Matplotlib: I need SOME HELP!!!') == 10/(13 + 10)
+
+    s = '\n'.join(["Mae hen wlad fy nhadau yn annwyl i mi,",
+                   "Gwlad beirdd a chantorion, enwogion o fri;",
+                   "Ei gwrol ryfelwyr, gwladgarwyr tra mad,",
+                   "Dros ryddid collasant eu gwaed."])
+    result = question.character_fractions(s)
+
+    assert result.upper == 4/153
+    assert result.lower == 117/153
+    assert result.numeric == 0
+    assert result.punctuation == 6/153
+    assert result.space == 23/153
+    assert result.control == 3/153
+
+    s = 'x = (6.63*10^-34)'
+    result = question.character_fractions(s)
+
+    assert result.numeric == 7/12
+    assert result.punctuation == 2/12
+
+    assert question.character_fractions('') == (0, 0, 0, 0, 0, 0)
 
 
-### Body
-
-def test_body_percentage():
+def test_capitalised_string():
     """
-    Test the string_length_percentage() function.
+    Test the capitalised_string() function.
+    :return: None
+    """
+    assert question.capitalised_string('Why is reading lines from stdin much slower in C++ than Python?')
+    assert not question.capitalised_string('how make pysmp oids respone readable for human')
+    assert not question.capitalised_string('??? wat do???')
+
+
+def test_string_length_fraction():
+    """
+    Test the string_length_fraction() function.
     :return: None
     """
     str1 = ['    x = 1    \n\n\n ', '              z = 2', ]
     str2 = ['i want\t \t ',  'o       ', ]
-    assert question.string_length_percentage(str1, str2) == 0.5
-    assert question.string_length_percentage(str1, str2) != 1.0
-
-### Code
-
-### Tags
-
-### Answers
-
-### Comments
+    assert question.string_length_fraction(str1, str2) == 0.5
+    assert question.string_length_fraction(str1, str2) != 1.0
