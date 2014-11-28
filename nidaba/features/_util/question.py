@@ -100,32 +100,43 @@ def stackoverflow_urls(s):
     """
     Return any urls that belong to Stack Overflow.
     :param s: Input string to get urls from.
-    :return: dict with stackoverflow urls, keys are 'question', 'answer', etc and the values are lists of url strings.
+    :return: dict with stackoverflow urls, keys are 'question', 'answer',
+             etc and the values are lists of url strings.
     """
 
-    result = {}
 
     flags = [re.IGNORECASE]
 
-    q_regex = re.compile(r'((?:https?://)?(?:www\.)?stackoverflow\.com/q(?:uestions)?/(?:\d+)(?:/[\w-]+)?/?)', *flags)
-    a_regex = re.compile(r'((?:https?://)?(?:www\.)?stackoverflow\.com/(?:questions/(?:\d+)/[\w-]*?/(?:\d+)(?:#\S+)?|a/(?:\d+)?/?(?:\d+)?))', *flags)
-    c_regex = re.compile(r'((?:https?://)?(?:www\.)?stackoverflow\.com/q(?:uestions)?/(?:\d+)(?:/[\w-]+)?#comment(?:\d+)_(?:\d+))', *flags)
-    u_regex = re.compile(r'((?:https?://)?(?:www\.)?stackoverflow\.com/u(?:sers)?/(?:\d+)/?(?:\w+)?)', *flags)
+    base = r'(?:https?://)?(?:www\.)?stackoverflow\.com/'
+    q_string = r'({}q(?:uestions)?/(?:\d+)(?:/[\w-]+)?/?)'
+    a_string = r'({}(?:questions/(?:\d+)/[\w-]*?/(?:\d+)(?:#\S+)?|a/(?:\d+)?/?(?:\d+)?))'
+    c_string = r'({}q(?:uestions)?/(?:\d+)(?:/[\w-]+)?#comment(?:\d+)_(?:\d+))'
+    u_string = r'({}u(?:sers)?/(?:\d+)/?(?:\w+)?)'
 
-    # Have to be ran in a certain order to add the beginning index of the comments and answers urls. Otherwise the questions
-    # url will match them accidentally. Thus we use an OrderedDict and add the starting index of each match object to a set.
-    # Then, if a question accidentally matches a comment url, it isn't added because the starting index is already in the set.
+    q_regex = re.compile(q_string.format(base), *flags)
+    a_regex = re.compile(a_string.format(base), *flags)
+    c_regex = re.compile(c_string.format(base), *flags)
+    u_regex = re.compile(u_string.format(base), *flags)
+
+    # Have to be ran in a certain order to add the beginning index of the comments and answers urls.
+    # Otherwise the questions url will match them accidentally. As such, we add the starting index
+    # of each match object to a set. Then, if a question accidentally matches a comment url,
+    # it isn't added because the starting index is already in the set.
 
     matches = set()
 
-    regexes = OrderedDict([('users', u_regex),
-                           ('comments', c_regex),
-                           ('answers', a_regex),
-                           ('questions', q_regex)])
+    regexes = [('users', u_regex),
+               ('comments', c_regex),
+               ('answers', a_regex),
+               ('questions', q_regex)]
 
-    for key, regex in regexes.items():
-        urls = list(regex.finditer(s))
-        result[key] = [m.group(0) for m in urls if m.start(0) not in matches]
-        matches |= set(m.start(0) for m in urls)
+    result = {}
+
+    for key, regex in regexes:
+        result[key] = []
+        for m in regex.finditer(s):
+            if m.start(0) not in matches:
+                result[key].append(m.group(0))
+                matches.add(m.start(0))
 
     return result
