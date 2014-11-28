@@ -83,3 +83,82 @@ def test_string_length_fraction():
     str2 = ['i want\t \t ',  'o       ', ]
     assert question.string_length_fraction(str1, str2) == 0.5
     assert question.string_length_fraction(str1, str2) != 1.0
+
+
+def test_stackoverflow_urls():
+    """
+    Test the stackoverflow_urls() function
+    :return: None
+    """
+
+    # Empty dict that should be returned if no matches found
+    empty = {'questions': [], 'answers': [], 'comments': [], 'users': []}
+
+    assert question.stackoverflow_urls('') == empty  # Empty string
+    assert question.stackoverflow_urls("some short sentence that\nreally shouldn't match") == empty  # No url
+    assert question.stackoverflow_urls('I love http://www.google.co.uk') == empty  # Non-matching url
+    assert question.stackoverflow_urls('http://stackoverflow.com/questions/tagged/python') == empty  # Non-matching SO url
+
+    questions = ['http://stackoverflow.com/questions/27187789/python-regular-expressions-use-of-or',
+                 'http://stackoverflow.com/q/27187776/3005188',
+                 'http://stackoverflow.com/q/27187776/',
+                 'http://stackoverflow.com/q/27187776',
+                 'http://stackoverflow.com/questions/27187682']
+
+    for s in questions:
+        result = question.stackoverflow_urls(s)
+        assert s in result['questions']
+        for i in ['answers', 'comments', 'users']:
+            assert s not in result[i]
+
+    answers = ['http://stackoverflow.com/a/27190092/3005188',
+               'http://stackoverflow.com/a/27190092/',
+               'http://stackoverflow.com/a/27190092',
+               'http://stackoverflow.com/questions/27190013/how-do-i-convert-32b-four-characters/27190092#27190092']
+
+    for s in answers:
+        result = question.stackoverflow_urls(s)
+        assert s in result['answers']
+        for i in ['questions', 'comments', 'users']:
+            assert s not in result[i]
+
+    comments = ['http://stackoverflow.com/questions/27189044/import-with-dot-name-in-python#comment42865341_27189110',
+                'http://stackoverflow.com/questions/27189044/import-with-dot-name-in-python#comment42864835_27189044']
+
+    for s in comments:
+        result = question.stackoverflow_urls(s)
+        assert s in result['comments']
+        for i in ['questions', 'answers', 'users']:
+            assert s not in result[i]
+
+    users = ['http://stackoverflow.com/users/3005188/ffisegydd',
+             'http://stackoverflow.com/users/100297/',
+             'http://stackoverflow.com/users/100297']
+
+    for s in users:
+        result = question.stackoverflow_urls(s)
+        assert s in result['users']
+        for i in ['questions', 'comments', 'answers']:
+            assert s not in result[i]
+
+    # Testing a long string filled with multiple urls
+    s = '''This is going to be a very long string. It is going to contain links to questions like
+           http://stackoverflow.com/q/27187776/3005188. It's also going to contain links to some answers using html
+           just like <a href="http://stackoverflow.com/a/27190092/3005188">this!</a>. It may even contain some comments
+           if you're well behaved, like http://stackoverflow.com/questions/27189044/import-with-dot-name-in-python#comment42864835_27189044!
+
+           It's been written by a particular user, you can find his profile at http://stackoverflow.com/users/3005188/ffisegydd.'''
+
+    d = question.stackoverflow_urls(s)
+
+    assert 'http://stackoverflow.com/q/27187776/3005188' in d['questions']
+    assert 'http://stackoverflow.com/a/27190092/3005188' in d['answers']
+    assert 'http://stackoverflow.com/questions/27189044/import-with-dot-name-in-python#comment42864835_27189044' in d['comments']
+    assert 'http://stackoverflow.com/users/3005188/ffisegydd' in d['users']
+
+    assert all(len(v) == 1 for k, v in d.items())  # Testing that only one url has been found for each key/value pair.
+
+    # Testing multiple questions in the same string.
+    d = question.stackoverflow_urls(' '.join(questions))
+
+    assert len(d['questions']) == 5
