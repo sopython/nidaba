@@ -74,7 +74,6 @@ def character_fractions(s):
     c = categorise_string_characters(s)
 
     total = sum(v for k, v in c.items() if k in categories.values())
-    print(total)
     if total == 0:
         return Fraction(*[0]*len(categories))  # Dirty hack is dirty. I love it.
 
