@@ -162,3 +162,47 @@ def test_stackoverflow_urls():
     d = question.stackoverflow_urls(' '.join(questions))
 
     assert len(d['questions']) == 5
+
+def test_python_docs_urls():
+    """
+    Test python-docs_urls function which gets urls to Python documentation from a string
+    :return: None
+    """
+
+    empty = []
+
+    assert question.python_docs_urls('') == empty  # Empty string
+    assert question.python_docs_urls("some short sentence that\nreally shouldn't match") == empty  # No url
+    assert question.python_docs_urls('I love http://www.google.co.uk') == empty  # Non-matching url
+    assert question.python_docs_urls('http://stackoverflow.com/questions/tagged/python') == empty  # Non-matching SO url
+
+    # Various urls from docs.python.org that should all match
+    urls = ['docs.python.org',
+            'https://docs.python.org/3.2',
+            'http://docs.python.org/3.3',
+            'https://docs.python.org/3/index.html',
+            'https://docs.python.org/3/whatsnew/3.4.html',
+            'https://docs.python.org/3/library/functions.html',
+            'https://docs.python.org/2.6/library/functions.html#eval',
+            'https://docs.python.org/2.7/library/csv.html#csv.Error',
+            'https://docs.python.org/3.5/',
+            'https://docs.python.org/3/library/stdtypes.html#class.__mro__']
+
+    for url in urls:
+        print(url)
+        result = question.python_docs_urls(url)
+        print(result)
+        assert result[0] == url
+
+    s = """This is going to be a very long string! I love the Python docs at https://docs.python.org. I particularly
+           like the doc for https://docs.python.org/3/library/stdtypes.html#class.__mro__. Though you should also check
+           what is new in Python 3.5 here https://docs.python.org/3.5/whatsnew/3.5.html"""
+
+    result = question.python_docs_urls(s)
+
+    urls = ['https://docs.python.org',
+            'https://docs.python.org/3/library/stdtypes.html#class.__mro__',
+            'https://docs.python.org/3.5/whatsnew/3.5.html']
+
+    for url in urls:
+        assert url in result

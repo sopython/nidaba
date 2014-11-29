@@ -104,8 +104,7 @@ def stackoverflow_urls(s):
              etc and the values are lists of url strings.
     """
 
-
-    flags = [re.IGNORECASE]
+    flags = re.IGNORECASE
 
     base = r'(?:https?://)?(?:www\.)?stackoverflow\.com/'
     q_string = r'({}q(?:uestions)?/(?:\d+)(?:/[\w-]+)?/?)'
@@ -113,10 +112,10 @@ def stackoverflow_urls(s):
     c_string = r'({}q(?:uestions)?/(?:\d+)(?:/[\w-]+)?#comment(?:\d+)_(?:\d+))'
     u_string = r'({}u(?:sers)?/(?:\d+)/?(?:\w+)?)'
 
-    q_regex = re.compile(q_string.format(base), *flags)
-    a_regex = re.compile(a_string.format(base), *flags)
-    c_regex = re.compile(c_string.format(base), *flags)
-    u_regex = re.compile(u_string.format(base), *flags)
+    q_regex = re.compile(q_string.format(base), flags)
+    a_regex = re.compile(a_string.format(base), flags)
+    c_regex = re.compile(c_string.format(base), flags)
+    u_regex = re.compile(u_string.format(base), flags)
 
     # Have to be ran in a certain order to add the beginning index of the comments and answers urls.
     # Otherwise the questions url will match them accidentally. As such, we add the starting index
@@ -138,5 +137,24 @@ def stackoverflow_urls(s):
             if m.start(0) not in matches:
                 result[key].append(m.group(0))
                 matches.add(m.start(0))
+
+    return result
+
+
+def python_docs_urls(s):
+    """
+    Find urls that match the Python docs inside a string.
+    :param s: Input string
+    :return: List of urls
+    """
+
+    flags = re.IGNORECASE
+    pattern = r"(?:https?://)?docs.python.org/?[\d\.]*/?[\w\.\-]*/?[\w\-\.]*#?[\w\-]*(?:\.[\w\-]+)*"
+    regex = re.compile(pattern, flags)
+
+    # Consider a url at the end of a sentence. The regex will inadvertently return the full stop (period)
+    # at the end of the url, even though it isn't part of the url. As such a list comp is used to rstrip
+    # full stops from the end of the strings.
+    result = [i.rstrip('.') for i in regex.findall(s)]
 
     return result
