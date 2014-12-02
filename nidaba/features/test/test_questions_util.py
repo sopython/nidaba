@@ -162,3 +162,13 @@ def test_stackoverflow_urls():
     d = question.stackoverflow_urls(' '.join(questions))
 
     assert len(d['questions']) == 5
+
+
+def test_get_emoticons():
+    """
+    Test get_emoticons() function.
+    :return: None
+    """
+    text = "test passed :) :D "
+    assert question.get_emoticons(text) == [':)', ':D']
+    assert question.get_emoticons(text) != [':)']
