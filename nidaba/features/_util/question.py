@@ -149,12 +149,9 @@ def python_docs_urls(s):
     """
 
     flags = re.IGNORECASE
-    pattern = r"(?:https?://)?docs.python.org/?[\d\.]*/?[\w\.\-]*/?[\w\-\.]*#?[\w\-]*(?:\.[\w\-]+)*"
+    pattern = r"(?:https?://)?docs.python.org/?(?:\d+(?:\.(?:\d+|x))*)?/?(?:\w+(?:[.-]\w+)*)?/?(?:\w+(?:[.-]\w+)*)?#?[\w\-]*(?:\.[\w\-]+)*"
     regex = re.compile(pattern, flags)
 
-    # Consider a url at the end of a sentence. The regex will inadvertently return the full stop (period)
-    # at the end of the url, even though it isn't part of the url. As such a list comp is used to rstrip
-    # full stops from the end of the strings.
-    result = [i.rstrip('.') for i in regex.findall(s)]
+    result = regex.findall(s)
 
     return result

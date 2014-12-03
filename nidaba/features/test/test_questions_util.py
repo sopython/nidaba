@@ -186,7 +186,12 @@ def test_python_docs_urls():
             'https://docs.python.org/2.6/library/functions.html#eval',
             'https://docs.python.org/2.7/library/csv.html#csv.Error',
             'https://docs.python.org/3.5/',
-            'https://docs.python.org/3/library/stdtypes.html#class.__mro__']
+            'https://docs.python.org/3/library/stdtypes.html#class.__mro__',
+            'https://docs.python.org/3/c-api/init.html#c.Py_SetPath',
+            'https://docs.python.org/dev/',
+            'https://docs.python.org/3/library/xml.sax.reader.html#xml.sax.xmlreader.AttributesImpl',
+            'https://docs.python.org/3/glossary.html#glossary',
+            'https://docs.python.org/3/library/http.server.html#http.server.BaseHTTPRequestHandler.handle_expect_100']
 
     for url in urls:
         print(url)
