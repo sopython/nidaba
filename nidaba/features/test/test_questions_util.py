@@ -194,9 +194,7 @@ def test_python_docs_urls():
             'https://docs.python.org/3/library/http.server.html#http.server.BaseHTTPRequestHandler.handle_expect_100']
 
     for url in urls:
-        print(url)
         result = question.python_docs_urls(url)
-        print(result)
         assert result[0] == url
 
     s = """This is going to be a very long string! I love the Python docs at https://docs.python.org. I particularly

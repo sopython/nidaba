@@ -1,6 +1,8 @@
-from bs4 import BeautifulSoup
-from bs4.element import NavigableString, Tag
+from copy import deepcopy
 
+from bs4 import BeautifulSoup
+from bs4.element import NavigableString
+from .util import Text
 
 class SEObject(object):
     """
@@ -31,47 +33,43 @@ class Post(SEObject):
 
     def __init__(self, data):
         """
-        :param data: Dict containing comment information.
+        :param data: Dict containing Post information.
         :return: None
         """
         super().__init__(data)
-        self.body = self._data.get('Body', '')
-        self.text = self._get_text(self.body)
-        self.code = self._get_code(self.body)
-        self.markup = self._get_markup(self.body)
+        self.body = self._data.get('body', '')
+        self.soup = BeautifulSoup(self.body)
 
-    @classmethod
-    def _get_code(cls, html):
+        self.text = self._get_text()
+        self.code = self._get_code()
+
+    def _get_code(self):
         """
         Extract code without markup tags from a given html content.
-        :param html: String
         :return List of code strings in the given content
         """
-        return [i.get_text() for i in BeautifulSoup(html).find_all('code')]
 
-    @classmethod
-    def _get_text(cls, html):
+        return [i.get_text() for i in self.soup.find_all('code')]
+
+    def _get_text(self):
         """
         Extract text from html content by removing markup tags & code.
-        :param html: String
         :return List of strings in the given content
         """
-        soup = BeautifulSoup(html)
-        [s.extract() for s in soup('code')]
-        return [i for i in soup.recursiveChildGenerator()
-                if isinstance(i, NavigableString)]
 
-    @classmethod
-    def _get_markup(cls, html):
-        """
-        Filter markup tags from a given html content.
-        :param html: String
-        :return List of markup tags in the given content
-        """
-        soup = BeautifulSoup(html).recursiveChildGenerator()
-        tags = [tag for tag in soup if isinstance(tag, Tag)]
-        return [str(t) if t.isSelfClosing else str(t).replace(t.string, '')
-                for t in tags]
+        # Hacky. But the official docs say that to remove tags (such as <code></code>) you should use
+        # the LC method below. Unfortunately that ruins self.soup for any other methods. Making a
+        # deepcopy seemed the best choice.
+        soup = deepcopy(self.soup)
+
+        [s.extract() for s in soup('code')]
+
+        text = [Text(text.strip()) for text in soup.recursiveChildGenerator()
+                if isinstance(text, NavigableString) and text != '\n']
+
+        text = Text(soup.get_text().strip())
+
+        return text
 
 
 class Comment(Post):
