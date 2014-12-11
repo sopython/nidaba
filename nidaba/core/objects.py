@@ -2,7 +2,7 @@ from copy import deepcopy
 
 from bs4 import BeautifulSoup
 from bs4.element import NavigableString
-
+from .util import Text
 
 class SEObject(object):
     """
@@ -63,7 +63,10 @@ class Post(SEObject):
         soup = deepcopy(self.soup)
 
         [s.extract() for s in soup('code')]
-        return [i for i in soup.recursiveChildGenerator() if isinstance(i, NavigableString)]
+
+        text = Text(' '.join([i for i in soup.recursiveChildGenerator() if isinstance(i, NavigableString)]))
+
+        return text
 
 
 class Comment(Post):
