@@ -12,3 +12,8 @@ class Text(str):
     @property
     def sentences(self):
         return sent_tokenize(self)
+
+class Code(object):
+
+    def __init__(self, code):
+        pass

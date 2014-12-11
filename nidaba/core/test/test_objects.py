@@ -1,5 +1,6 @@
 from ..objects import Post, Question, Answer, User, Comment
 
+# TODO: Enhance the unittests here to be more thorough.
 
 def test_post_object():
     d = {'Body': '<p>bar</p><code>x=1</code><br/>'}
