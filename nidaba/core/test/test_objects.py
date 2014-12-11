@@ -6,7 +6,6 @@ def test_post_object():
     p = Post(d)
     assert p.code == ['x=1']
     assert p.text == ['bar']
-    assert p.markup == ['<p></p>', '<code></code>', '<br/>']
 
 
 def test_answer_object():

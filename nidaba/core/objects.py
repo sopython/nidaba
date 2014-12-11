@@ -1,7 +1,7 @@
 from copy import deepcopy
 
 from bs4 import BeautifulSoup
-from bs4.element import NavigableString, Tag
+from bs4.element import NavigableString
 
 
 class SEObject(object):
@@ -42,7 +42,6 @@ class Post(SEObject):
 
         self.text = self._get_text()
         self.code = self._get_code()
-        self.markup = self._get_markup()
 
     def _get_code(self):
         """
@@ -65,17 +64,6 @@ class Post(SEObject):
 
         [s.extract() for s in soup('code')]
         return [i for i in soup.recursiveChildGenerator() if isinstance(i, NavigableString)]
-
-    def _get_markup(self):
-        """
-        Filter markup tags from a given html content.
-        :return List of markup tags in the given content
-        """
-
-        soup = self.soup.recursiveChildGenerator()
-        tags = [tag for tag in soup if isinstance(tag, Tag)]
-        return [str(t) if t.isSelfClosing else str(t).replace(t.string, '')
-                for t in tags]
 
 
 class Comment(Post):
