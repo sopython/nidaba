@@ -1,8 +1,19 @@
 from ..objects import Post, Question, Answer, User, Comment
 
+from bs4 import BeautifulSoup
+
 # TODO: Enhance the unittests here to be more thorough.
 
 def test_post_object():
+
+    # Empty data dict.
+    p = Post({})
+    assert p.body == ''
+    assert p.text == ''
+    assert p.code == []
+    assert p.soup == BeautifulSoup('')
+
+    # Simple data dict
     d = {'Body': '<p>bar</p><code>x=1</code><br/>'}
     p = Post(d)
     assert p.code == ['x=1']
@@ -18,10 +29,17 @@ def test_post_object():
     p = Post(d)
     assert p.code == ['code!', 'if code is code: print("code!")']
     assert p.text == 'This is a long piece of code!\nIt contains multiple paragraphs, and some of them will even contain'
+    assert p.text.words == ['This', 'is', 'a', 'long', 'piece', 'of', 'code', '!', 'It', 'contains', 'multiple',
+                            'paragraphs', ',', 'and', 'some', 'of', 'them', 'will', 'even', 'contain']
+    assert p.text.sentences == ['This is a long piece of code!',
+                                'It contains multiple paragraphs, and some of them will even contain']
 
     d = {'Body':'<p>I like <b>different</b> <i>formatting!</i></p>'}
     p = Post(d)
     assert p.text == 'I like different formatting!'
+    assert p.code == []
+    assert p.text.words == ['I', 'like', 'different', 'formatting', '!']
+    assert p.text.sentences == ['I like different formatting!']
 
 def test_answer_object():
     d = {'Body': '<p>bar</p><code>x=1</code>'}
