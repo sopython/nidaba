@@ -3,6 +3,7 @@ from ..objects import Post, Question, Answer, User, Comment
 from bs4 import BeautifulSoup
 
 # TODO: Enhance the unittests here to be more thorough.
+# TODO: Look into different forms of HTML in posts, such as lists etc.
 
 def test_post_object():
 
@@ -18,6 +19,10 @@ def test_post_object():
     p = Post(d)
     assert p.code == ['x=1']
     assert p.text == 'bar'
+    assert p.text.words == ['bar']
+    assert p.text.sentences == ['bar']
+
+    # More complicated body example.
     d = {'Body': '''<html>
                     <body>
                         <p>This is a long piece of code!</p>
@@ -34,6 +39,7 @@ def test_post_object():
     assert p.text.sentences == ['This is a long piece of code!',
                                 'It contains multiple paragraphs, and some of them will even contain']
 
+    # Bold and italic text formatting.
     d = {'Body':'<p>I like <b>different</b> <i>formatting!</i></p>'}
     p = Post(d)
     assert p.text == 'I like different formatting!'
