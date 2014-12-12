@@ -2,7 +2,7 @@ from copy import deepcopy
 
 from bs4 import BeautifulSoup
 from bs4.element import NavigableString
-from util import Text
+from .util import Text
 
 class SEObject(object):
     """
