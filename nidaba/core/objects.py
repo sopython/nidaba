@@ -67,6 +67,7 @@ class Post(SEObject):
         text = [Text(text.strip()) for text in soup.recursiveChildGenerator()
                 if isinstance(text, NavigableString) and text != '\n']
 
+        text = Text(soup.get_text().strip())
 
         return text
 
@@ -107,7 +108,7 @@ class Question(Post):
 
     def __init__(self, data, answers=None, comments=None):
         """
-        :param data: Dict containing question information.
+        :param data: Dict containing question inform‰ation.
         :param answers: List of dicts containing answer information.
         :param comments: List of dicts containing comment information
         :return: None
