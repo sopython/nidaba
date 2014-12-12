@@ -64,7 +64,6 @@ class Post(SEObject):
 
         [s.extract() for s in soup('code')]
 
-        # text = Text(' '.join([i for i in soup.recursiveChildGenerator() if isinstance(i, NavigableString)]))
         text = [Text(text.strip()) for text in soup.recursiveChildGenerator()
                 if isinstance(text, NavigableString) and text != '\n']
 
@@ -124,16 +123,3 @@ class Question(Post):
             self.comments = []
         else:
             self.comments = [Comment(comm) for comm in comments]
-
-d = {'Body': '''<html>
-                    <body>
-                        <p>This is a long piece of code!</p>
-                        <p>It contains multiple paragraphs, and some of them will even contain <code>code!</code></p>
-
-                        <code>if code is code: print("code!")</code>
-                    </body>
-                    </html>'''}
-
-q = Question(d)
-
-print(q.text)
