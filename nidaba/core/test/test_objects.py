@@ -17,7 +17,7 @@ def test_post_object():
                     </html>'''}
     p = Post(d)
     assert p.code == ['code!', 'if code is code: print("code!")']
-    assert p.text == ['This is a long piece of code!', 'It contains multiple paragraphs, and some of them will even contain ']
+    assert p.text == ['This is a long piece of code!', 'It contains multiple paragraphs, and some of them will even contain']
 
 
 def test_answer_object():
