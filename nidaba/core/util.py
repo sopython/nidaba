@@ -1,9 +1,11 @@
 from nltk import word_tokenize, sent_tokenize
 
 class Text(str):
-    @property
-    def lower_text(self):
-        return self.lower()
+    """
+    Text object to hold non-code text.
+
+    Subclassed from str with some extra methods for tokenisation.
+    """
 
     @property
     def words(self):
