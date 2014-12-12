@@ -2,7 +2,7 @@ from copy import deepcopy
 
 from bs4 import BeautifulSoup
 from bs4.element import NavigableString
-from .util import Text
+from util import Text
 
 class SEObject(object):
     """
@@ -65,7 +65,8 @@ class Post(SEObject):
         [s.extract() for s in soup('code')]
 
         # text = Text(' '.join([i for i in soup.recursiveChildGenerator() if isinstance(i, NavigableString)]))
-        text = [Text(text) for text in soup.recursiveChildGenerator() if isinstance(text, NavigableString)]
+        text = [Text(text) for text in soup.recursiveChildGenerator()
+                if isinstance(text, NavigableString) and text != '\n']
 
 
         return text
@@ -123,3 +124,16 @@ class Question(Post):
             self.comments = []
         else:
             self.comments = [Comment(comm) for comm in comments]
+
+d = {'Body': '''<html>
+                    <body>
+                        <p>This is a long piece of code!</p>
+                        <p>It contains multiple paragraphs, and some of them will even contain <code>code!</code></p>
+
+                        <code>if code is code: print("code!")</code>
+                    </body>
+                    </html>'''}
+
+q = Question(d)
+
+print(q.text)

@@ -7,6 +7,17 @@ def test_post_object():
     p = Post(d)
     assert p.code == ['x=1']
     assert p.text == ['bar']
+    d = {'Body': '''<html>
+                    <body>
+                        <p>This is a long piece of code!</p>
+                        <p>It contains multiple paragraphs, and some of them will even contain <code>code!</code></p>
+
+                        <code>if code is code: print("code!")</code>
+                    </body>
+                    </html>'''}
+    p = Post(d)
+    assert p.code == ['code!', 'if code is code: print("code!")']
+    assert p.text == ['This is a long piece of code!', 'It contains multiple paragraphs, and some of them will even contain ']
 
 
 def test_answer_object():
