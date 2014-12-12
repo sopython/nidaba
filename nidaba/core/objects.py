@@ -64,7 +64,9 @@ class Post(SEObject):
 
         [s.extract() for s in soup('code')]
 
-        text = Text(' '.join([i for i in soup.recursiveChildGenerator() if isinstance(i, NavigableString)]))
+        # text = Text(' '.join([i for i in soup.recursiveChildGenerator() if isinstance(i, NavigableString)]))
+        text = [Text(text) for text in soup.recursiveChildGenerator() if isinstance(text, NavigableString)]
+
 
         return text
 
