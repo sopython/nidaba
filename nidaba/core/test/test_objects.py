@@ -47,6 +47,16 @@ def test_post_object():
     assert p.text.words == ['I', 'like', 'different', 'formatting', '!']
     assert p.text.sentences == ['I like different formatting!']
 
+    # Image link added
+    d = {'Body':'''<p>I like this image!</p>
+
+         <p><img src=\"http://img-9gag-ftw.9cache.com/photo/aYpROWw_700b.jpg\" alt=\"Image description\"></p>'''}
+    p = Post(d)
+    assert p.text == 'I like this image!'
+    assert p.code == []
+    assert p.text.words == ['I', 'like', 'this', 'image', '!']
+    assert p.text.sentences == ['I like this image!']
+
 def test_answer_object():
     d = {'Body': '<p>bar</p><code>x=1</code>'}
     a = Answer(d)
