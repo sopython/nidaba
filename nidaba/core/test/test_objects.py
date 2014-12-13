@@ -57,6 +57,28 @@ def test_post_object():
     assert p.text.words == ['I', 'like', 'this', 'image', '!']
     assert p.text.sentences == ['I like this image!']
 
+    # List testing
+    s = '''<p>More specifically:</p>
+
+           <ol>
+           <li>What does <code>n=n</code> mean?</li>
+           <li>What will be the content of <code>'list'</code>?</li>
+           <li><p>What will be the output of </p>
+
+           <p><code>print(list[0](14))</code> and <code>print(list[0]()(14))</code></p></li>
+           </ol>
+
+           <p>and why?</p>'''
+    d = {'Body':s}
+    p = Post(d)
+    assert p.text == ('More specifically:\n\n'
+                      'What does  mean?\n'
+                      'What will be the content of ?\n'
+                      'What will be the output of \n'
+                      ' and \n\n'
+                      'and why?')
+    assert p.code == ['n=n', "'list'", 'print(list[0](14))', 'print(list[0]()(14))']
+
 def test_answer_object():
     d = {'Body': '<p>bar</p><code>x=1</code>'}
     a = Answer(d)
