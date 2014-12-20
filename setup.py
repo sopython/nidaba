@@ -10,7 +10,7 @@ except FileNotFoundError:
     requirements = []
 
 try:
-    with open(os.path.join(os.path.dirname(__file__), 'sopy', '__init__.py')) as f:
+    with open(os.path.join(os.path.dirname(__file__), 'nidaba', '__init__.py')) as f:
         version = re.search(r"__version__ = '(.*)'", f.read()).group(1)
 except FileNotFoundError:
     version = 'test'
