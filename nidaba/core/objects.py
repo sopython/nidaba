@@ -37,7 +37,7 @@ class Post(SEObject):
         :return: None
         """
         super().__init__(data)
-        self.body = self._data.get('Body', '')
+        self.body = self._data.get('body', '')
         self.soup = BeautifulSoup(self.body)
 
         self.text = self._get_text()
@@ -108,7 +108,7 @@ class Question(Post):
 
     def __init__(self, data, answers=None, comments=None):
         """
-        :param data: Dict containing question inform‰ation.
+        :param data: Dict containing question information.
         :param answers: List of dicts containing answer information.
         :param comments: List of dicts containing comment information
         :return: None

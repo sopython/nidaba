@@ -15,7 +15,7 @@ def test_post_object():
     assert p.soup == BeautifulSoup('')
 
     # Simple data dict
-    d = {'Body': '<p>bar</p><code>x=1</code><br/>'}
+    d = {'body': '<p>bar</p><code>x=1</code><br/>'}
     p = Post(d)
     assert p.code == ['x=1']
     assert p.text == 'bar'
@@ -23,7 +23,7 @@ def test_post_object():
     assert p.text.sentences == ['bar']
 
     # More complicated body example.
-    d = {'Body': '''<html>
+    d = {'body': '''<html>
                     <body>
                         <p>This is a long piece of code!</p>
                         <p>It contains multiple paragraphs, and some of them will even contain <code>code!</code></p>
@@ -40,7 +40,7 @@ def test_post_object():
                                 'It contains multiple paragraphs, and some of them will even contain']
 
     # Bold and italic text formatting.
-    d = {'Body':'<p>I like <b>different</b> <i>formatting!</i></p>'}
+    d = {'body':'<p>I like <b>different</b> <i>formatting!</i></p>'}
     p = Post(d)
     assert p.text == 'I like different formatting!'
     assert p.code == []
@@ -48,7 +48,7 @@ def test_post_object():
     assert p.text.sentences == ['I like different formatting!']
 
     # Image link added
-    d = {'Body':'''<p>I like this image!</p>
+    d = {'body':'''<p>I like this image!</p>
 
          <p><img src=\"http://img-9gag-ftw.9cache.com/photo/aYpROWw_700b.jpg\" alt=\"Image description\"></p>'''}
     p = Post(d)
@@ -69,7 +69,7 @@ def test_post_object():
            </ol>
 
            <p>and why?</p>'''
-    d = {'Body':s}
+    d = {'body':s}
     p = Post(d)
     assert p.text == ('More specifically:\n\n'
                       'What does  mean?\n'
@@ -80,21 +80,21 @@ def test_post_object():
     assert p.code == ['n=n', "'list'", 'print(list[0](14))', 'print(list[0]()(14))']
 
 def test_answer_object():
-    d = {'Body': '<p>bar</p><code>x=1</code>'}
+    d = {'body': '<p>bar</p><code>x=1</code>'}
     a = Answer(d)
     assert a.code == ['x=1']
     assert a.text == 'bar'
 
 
 def test_comment_object():
-    d = {'Body': '<p>bar</p><code>x=1</code>'}
+    d = {'body': '<p>bar</p><code>x=1</code>'}
     c = Comment(d)
     assert c.code == ['x=1']
     assert c.text == 'bar'
 
 
 def test_question_object():
-    d = {'Body': '<p>bar</p><code>x=1</code>'}
+    d = {'body': '<p>bar</p><code>x=1</code>'}
     q = Question(d, answers=[{'a': 1}])
     assert q.code == ['x=1']
     assert q.text == 'bar'
@@ -103,6 +103,6 @@ def test_question_object():
 
 # TODO: User object tests make no sense!
 def test_user_object():
-    d = {'Body': '<p>bar</p><code>x=1</code>'}
+    d = {'body': '<p>bar</p><code>x=1</code>'}
     u = User(d)
     assert u._data == d
