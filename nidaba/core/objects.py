@@ -1,7 +1,4 @@
-from copy import deepcopy
-
 from bs4 import BeautifulSoup
-from bs4.element import NavigableString
 from .util import Text
 
 class SEObject(object):
@@ -59,13 +56,13 @@ class Post(SEObject):
 
         # Hacky. But the official docs say that to remove tags (such as <code></code>) you should use
         # the LC method below. Unfortunately that ruins self.soup for any other methods. Making a
-        # deepcopy seemed the best choice.
-        soup = deepcopy(self.soup)
+        # new soup seemed the best choice.
+        soup = BeautifulSoup(self.body)
 
         [s.extract() for s in soup('code')]
 
-        text = [Text(text.strip()) for text in soup.recursiveChildGenerator()
-                if isinstance(text, NavigableString) and text != '\n']
+        # text = [Text(text.strip()) for text in soup.recursiveChildGenerator()
+                # if isinstance(text, NavigableString) and text != '\n']
 
         text = Text(soup.get_text().strip())
 
