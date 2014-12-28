@@ -209,3 +209,14 @@ def test_python_docs_urls():
 
     for url in urls:
         assert url in result
+
+
+def test_get_emoticons():
+    """
+    Test the get_emoticons() _util function.
+    :return: None
+    """
+    text = 'these are emoticons :) :D :-) '
+    assert question.get_emoticons(text) == {':)', ':D', ':-)'}
+    code = 'this is code x = [:D], y = [0:3], ED8 = 12'
+    assert question.get_emoticons(code) != {':D', '0:3', 'D8'}
