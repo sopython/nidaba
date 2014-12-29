@@ -159,8 +159,8 @@ def python_docs_urls(s):
 
 def get_emoticons(text):
     """
-    Return a list of emoticons in the given text.
-    :param text: String.
+    Return a dictionary of emoticons & their count in the given text.
+    :param text: String or List of words.
     :return: Dictionary - emoticons as keys and their count as values.
     """
     emoticons = (":-) :) :D :o) :] :3 :c) :> =] 8) =) :} :^) :っ) :-D 8-D 8D"
@@ -174,5 +174,6 @@ def get_emoticons(text):
                  ":-###.. :###.. <:-| ಠ_ಠ <*)))-{ ><(((*> ><> \o/ *\0/*"
                  "@}-;-'--- @>-->-- ~(_8^(I) 5:-) ~:-\ //0-0\\ *<|:-) =:o]"
                  ",:-) 7:^] <3 </3").split()
-    return dict((emoticon, text.count(emoticon)) for emoticon in emoticons
-                if emoticon in text.split())
+    if isinstance(text, str):
+        text = text.split()
+    return Counter(word for word in text if word in emoticons)
