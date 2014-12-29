@@ -161,7 +161,7 @@ def get_emoticons(text):
     """
     Return a list of emoticons in the given text.
     :param text: String.
-    :return: List of emoticons.
+    :return: Dictionary - emoticons as keys and their count as values.
     """
     emoticons = (":-) :) :D :o) :] :3 :c) :> =] 8) =) :} :^) :っ) :-D 8-D 8D"
                  "x-D xD X-D XD =-D =D =-3 =3 B^D :-)) >:[ :-( :( :-c :c :-<"
@@ -174,4 +174,5 @@ def get_emoticons(text):
                  ":-###.. :###.. <:-| ಠ_ಠ <*)))-{ ><(((*> ><> \o/ *\0/*"
                  "@}-;-'--- @>-->-- ~(_8^(I) 5:-) ~:-\ //0-0\\ *<|:-) =:o]"
                  ",:-) 7:^] <3 </3").split()
-    return frozenset(emoticons).intersection(text.split())
+    return dict((emoticon, text.count(emoticon)) for emoticon in emoticons
+                if emoticon in text.split())

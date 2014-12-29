@@ -216,7 +216,7 @@ def test_get_emoticons():
     Test the get_emoticons() _util function.
     :return: None
     """
-    text = 'these are emoticons :) :D :-) '
-    assert question.get_emoticons(text) == {':)', ':D', ':-)'}
-    code = 'this is code x = [:D], y = [0:3], ED8 = 12'
-    assert question.get_emoticons(code) != {':D', '0:3', 'D8'}
+    text = 'these are emoticons :) :D :)'
+    assert question.get_emoticons(text) == {':)': 2, ':D': 1}
+    code = 'this is code x = [:D], y = [0:3], ED8 = [:D]'
+    assert question.get_emoticons(code) != {':D': 2, '0:3': 1}
