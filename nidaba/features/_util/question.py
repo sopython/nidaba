@@ -2,7 +2,7 @@ import datetime
 import re
 from unicodedata import category
 from collections import Counter, namedtuple, OrderedDict
-
+from nidaba.exceptions.exceptions import FeatureException
 
 def get_weekday(t):
     """
@@ -12,7 +12,10 @@ def get_weekday(t):
     :param t: Timestamp
     :return: Integer corresponding to day of the week 0-6 for Mon-Sun.
     """
-    return datetime.datetime.utcfromtimestamp(t).weekday()
+    try:
+        return datetime.datetime.utcfromtimestamp(t).weekday()
+    except (OverflowError, ValueError, OSError):
+            raise FeatureException("Datetime is out of range, fool!")
 
 
 def is_weekend(t):

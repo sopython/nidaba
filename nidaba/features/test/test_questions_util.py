@@ -1,5 +1,6 @@
-import sys
+import sys, pytest
 from .._util import question
+from ...exceptions.exceptions import FeatureException
 
 
 def test_get_weekday():
@@ -20,12 +21,22 @@ def test_get_weekday():
     assert question.get_weekday(345599) == 6
     assert question.get_weekday(345600) == 0
 
-    # assert question.get_weekday(sys.maxsize+1) <--- Will throw an OverflowError
+    with pytest.raises(Exception):
+        raise Exception()
 
-    # max representable date by datetime:
-    # max_date = datetime.datetime(9999, 12, 31, 23, 59, 59)
-    # max_date_epoch = 253402300799
-    # assert question.get_weekday(max_date_epoch + 1) <---- Will throw a ValueError
+    with pytest.raises(FeatureException):
+        question.get_weekday(sys.maxsize+1)  # Overflow Error
+
+    with pytest.raises(FeatureException):
+        question.get_weekday(-sys.maxsize-1)  # OSError
+
+    with pytest.raises(FeatureException):
+        max_date_epoch = 253402300799
+        question.get_weekday(max_date_epoch+1)  # Value Error (31st December 9999 23:59:59)
+
+    with pytest.raises(FeatureException):
+        min_date_epoch = -253402300799
+        question.get_weekday(min_date_epoch-1)
 
 
 def test_is_weekend():
