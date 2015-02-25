@@ -1,13 +1,43 @@
-from .._util import question
+import sys
 
+import pytest
+from nidaba.features._util import question
+from nidaba.exceptions import FeatureException
 
 def test_get_weekday():
     """
     Test the get_weekday() _util function.
     :return: None
     """
+
+    # Regular data
     assert question.get_weekday(1416654427) == 5
     assert question.get_weekday(1417000158) != 5
+
+    # Ensure processes negative dates properly
+    assert question.get_weekday(-100000000) == 0
+    assert question.get_weekday(-99913600) != 0
+
+    # Ensure that days tick over properly (and that UTC timezone is being used)
+    assert question.get_weekday(345599) == 6
+    assert question.get_weekday(345600) == 0
+
+    with pytest.raises(Exception):
+        raise Exception()
+
+    with pytest.raises(FeatureException):
+        question.get_weekday(sys.maxsize+1)  # Overflow Error
+
+    with pytest.raises(FeatureException):
+        question.get_weekday(-sys.maxsize-1)  # OSError
+
+    with pytest.raises(FeatureException):
+        max_date_epoch = 253402300799
+        question.get_weekday(max_date_epoch+1)  # Value Error (31st December 9999 23:59:59)
+
+    with pytest.raises(FeatureException):
+        min_date_epoch = -253402300799
+        question.get_weekday(min_date_epoch-1)
 
 
 def test_is_weekend():
