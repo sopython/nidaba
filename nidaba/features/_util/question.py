@@ -6,11 +6,13 @@ from collections import Counter, namedtuple, OrderedDict
 
 def get_weekday(t):
     """
-    Returns the day of the week.
+    Returns the UTC day of the week.
+
+    Issue #42 - wasn't timezone agnostic. Should be now.
     :param t: Timestamp
     :return: Integer corresponding to day of the week 0-6 for Mon-Sun.
     """
-    return datetime.datetime.fromtimestamp(t).weekday()
+    return datetime.datetime.utcfromtimestamp(t).weekday()
 
 
 def is_weekend(t):

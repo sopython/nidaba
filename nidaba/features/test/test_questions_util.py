@@ -1,3 +1,4 @@
+import sys
 from .._util import question
 
 
@@ -6,8 +7,25 @@ def test_get_weekday():
     Test the get_weekday() _util function.
     :return: None
     """
+
+    # Regular data
     assert question.get_weekday(1416654427) == 5
     assert question.get_weekday(1417000158) != 5
+
+    # Ensure processes negative dates properly
+    assert question.get_weekday(-100000000) == 0
+    assert question.get_weekday(-99913600) != 0
+
+    # Ensure that days tick over properly (and that UTC timezone is being used)
+    assert question.get_weekday(345599) == 6
+    assert question.get_weekday(345600) == 0
+
+    # assert question.get_weekday(sys.maxsize+1) <--- Will throw an OverflowError
+
+    # max representable date by datetime:
+    # max_date = datetime.datetime(9999, 12, 31, 23, 59, 59)
+    # max_date_epoch = 253402300799
+    # assert question.get_weekday(max_date_epoch + 1) <---- Will throw a ValueError
 
 
 def test_is_weekend():
