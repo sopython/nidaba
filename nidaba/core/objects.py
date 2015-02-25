@@ -1,5 +1,7 @@
 from bs4 import BeautifulSoup
+from bs4.element import NavigableString
 from .util import Text
+
 
 class SEObject(object):
     """
@@ -43,14 +45,17 @@ class Post(SEObject):
     def _get_code(self):
         """
         Extract code without markup tags from a given html content.
+        :param html: String
         :return List of code strings in the given content
         """
+        return [i.get_text() for i in BeautifulSoup(html).find_all('code')]
 
         return [i.get_text() for i in self.soup.find_all('code')]
 
     def _get_text(self):
         """
         Extract text from html content by removing markup tags & code.
+        :param html: String
         :return List of strings in the given content
         """
 
@@ -60,6 +65,8 @@ class Post(SEObject):
         soup = BeautifulSoup(self.body)
 
         [s.extract() for s in soup('code')]
+        return [i for i in soup.recursiveChildGenerator()
+                if isinstance(i, NavigableString)]
 
         # text = [Text(text.strip()) for text in soup.recursiveChildGenerator()
                 # if isinstance(text, NavigableString) and text != '\n']
