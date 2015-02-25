@@ -1,5 +1,4 @@
 from bs4 import BeautifulSoup
-from bs4.element import NavigableString
 from .util import Text
 
 
@@ -48,7 +47,6 @@ class Post(SEObject):
         :param html: String
         :return List of code strings in the given content
         """
-        return [i.get_text() for i in BeautifulSoup(html).find_all('code')]
 
         return [i.get_text() for i in self.soup.find_all('code')]
 
@@ -65,11 +63,6 @@ class Post(SEObject):
         soup = BeautifulSoup(self.body)
 
         [s.extract() for s in soup('code')]
-        return [i for i in soup.recursiveChildGenerator()
-                if isinstance(i, NavigableString)]
-
-        # text = [Text(text.strip()) for text in soup.recursiveChildGenerator()
-                # if isinstance(text, NavigableString) and text != '\n']
 
         text = Text(soup.get_text().strip())
 
