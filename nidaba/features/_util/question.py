@@ -2,7 +2,7 @@ import datetime
 import re
 from unicodedata import category
 from collections import Counter, namedtuple, OrderedDict
-from nidaba.exceptions.exceptions import FeatureException
+from nidaba.exceptions import FeatureException
 
 def get_weekday(t):
     """

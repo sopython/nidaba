@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 from .util import Text
 
+
 class SEObject(object):
     """
     Base Object for SE Objects
@@ -43,6 +44,7 @@ class Post(SEObject):
     def _get_code(self):
         """
         Extract code without markup tags from a given html content.
+        :param html: String
         :return List of code strings in the given content
         """
 
@@ -51,6 +53,7 @@ class Post(SEObject):
     def _get_text(self):
         """
         Extract text from html content by removing markup tags & code.
+        :param html: String
         :return List of strings in the given content
         """
 
@@ -60,9 +63,6 @@ class Post(SEObject):
         soup = BeautifulSoup(self.body)
 
         [s.extract() for s in soup('code')]
-
-        # text = [Text(text.strip()) for text in soup.recursiveChildGenerator()
-                # if isinstance(text, NavigableString) and text != '\n']
 
         text = Text(soup.get_text().strip())
 

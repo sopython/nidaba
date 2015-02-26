@@ -1,7 +1,6 @@
 import sys, pytest
-from .._util import question
-from ...exceptions.exceptions import FeatureException
-
+from nidaba.features._util import question
+from nidaba.exceptions import FeatureException
 
 def test_get_weekday():
     """
