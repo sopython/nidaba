@@ -1,4 +1,4 @@
-import sys, pytest
+import sys, pytest, datetime, pytz
 from nidaba.features._util import question
 from nidaba.exceptions import FeatureException
 
@@ -20,9 +20,7 @@ def test_get_weekday():
     assert question.get_weekday(345599) == 6
     assert question.get_weekday(345600) == 0
 
-    with pytest.raises(Exception):
-        raise Exception()
-
+    # Make sure the various out of range exceptions are thrown
     with pytest.raises(FeatureException):
         question.get_weekday(sys.maxsize+1)  # Overflow Error
 
@@ -30,12 +28,12 @@ def test_get_weekday():
         question.get_weekday(-sys.maxsize-1)  # OSError
 
     with pytest.raises(FeatureException):
-        max_date_epoch = 253402300799
-        question.get_weekday(max_date_epoch+1)  # Value Error (31st December 9999 23:59:59)
+        # If replace is not used, then the timezone is naively converted into the test machine's timezone
+        question.get_weekday(datetime.datetime.max.replace(tzinfo=pytz.utc).timestamp() + 1)  # Value Error (> 31st December 9999 23:59:59)
 
     with pytest.raises(FeatureException):
-        min_date_epoch = -253402300799
-        question.get_weekday(min_date_epoch-1)
+        # If replace is not used, then the timezone is naively converted into the test machine's timezone
+        question.get_weekday(datetime.datetime.min.replace(tzinfo=pytz.utc).timestamp()-1) # Value Error (< 1st January 1 00:00:00)
 
 
 def test_is_weekend():
@@ -45,6 +43,30 @@ def test_is_weekend():
     """
     assert question.is_weekend(1416654427) is True
     assert question.is_weekend(1417000158) is False
+
+    # Ensure that days tick over properly (and that UTC timezone is being used)
+    # Weekend start
+    assert not question.is_weekend(172799)  # fri
+    assert question.is_weekend(172800)  # sat
+
+    # Weekend end
+    assert question.is_weekend(345599)  # sun
+    assert not question.is_weekend(345600)  # mon
+
+    # Make sure the various out of range exceptions are thrown
+    with pytest.raises(FeatureException):
+        question.is_weekend(sys.maxsize+1)  # Overflow Error
+
+    with pytest.raises(FeatureException):
+        question.is_weekend(-sys.maxsize-1)  # OSError
+
+    with pytest.raises(FeatureException):
+        # If replace is not used, then the timezone is naively converted into the test machine's timezone
+        question.is_weekend(datetime.datetime.max.replace(tzinfo=pytz.utc).timestamp() + 1)  # Value Error (> 31st December 9999 23:59:59)
+
+    with pytest.raises(FeatureException):
+        # If replace is not used, then the timezone is naively converted into the test machine's timezone
+        question.is_weekend(datetime.datetime.min.replace(tzinfo=pytz.utc).timestamp()-1) # Value Error (< 1st January 1 00:00:00)
 
 
 def test_categorise_string_characters():
